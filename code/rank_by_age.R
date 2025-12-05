@@ -22,7 +22,7 @@ age_rank <-
 
 
 ggsave(
-  here::here("figures/age_rank.png"),
+  here::here("output/figures/age_rank.png"),
   plot = age_rank,
   device = "png"
 )

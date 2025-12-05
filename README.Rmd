@@ -9,3 +9,15 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+`Data` 
+- This chunk reads our data as a csv file from the environment
+
+`player_eff. R` 
+- This chunck of code reads in the data
+-This project uses NBA box score data to calculate:
+ 1.  **Team-level shooting efficiency** (field goals made vs. field goals attempted),
+ 2. **Player-level shooting efficiency**, and
+ 3. A **Player Impact Score** that includes offensive and defensive contributions.
+
+For this analysis, I used field_goal as the measure of successful shots and field_goal_atmpts as total attempts. These variables are both reported per 36 minutes and reflect overall scoring efficiency. I then created a success ratio (field_goal / field_goal_atmpts) and ranked teams based on that efficiency score.
+

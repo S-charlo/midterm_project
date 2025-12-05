@@ -24,7 +24,7 @@ ggplot(data, aes(x = Age, y = FG)) +
   theme_minimal()
 
 ggsave(
-  here::here("figures/age_fg.png"),
+  here::here("output/figures/age_fg.png"),
   plot = age_fg,
   device = "png"
 )
@@ -40,7 +40,7 @@ ggplot(data, aes(x = Age, y = X3P)) +
   theme_minimal()
 
 ggsave(
-  here::here("figures/age_x3p.png"),
+  here::here("output/figures/age_x3p.png"),
   plot = age_x3p,
   device = "png"
 )
@@ -56,7 +56,7 @@ ggplot(data, aes(x = Age, y = X2P)) +
   theme_minimal()
 
 ggsave(
-  here::here("figures/age_x2p.png"),
+  here::here("output/figures/age_x2p.png"),
   plot = age_x2p,
   device = "png"
 )
@@ -72,7 +72,7 @@ ggplot(data, aes(x = Age, y = FT)) +
   theme_minimal()
 
 ggsave(
-  here::here("figures/age_ft.png"),
+  here::here("output/figures/age_ft.png"),
   plot = age_ft,
   device = "png"
 )
@@ -87,7 +87,7 @@ ggplot(data, aes(x = Age, y = Rk)) +
 
 
 ggsave(
-  here::here("figures/age_rank.png"),
+  here::here("output/figures/age_rank.png"),
   plot = age_rank,
   device = "png"
 )

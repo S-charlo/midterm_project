@@ -1,20 +1,27 @@
-here::i_am("code")
+here::i_am("code/player_eff.R")
 
-"READ csv"
-data <- read.csv("~/Data550/nba_2025-10-30")
-write.csv(data, "nba_2025-10-30.csv", row.names = FALSE)
-head(data)
-"********************************************************************************"
 
 library(dplyr)
 library(ggplot2)
+library(ggplot2)
+library(here)
 
-"Create team-level efficiency (attempts vs successful shots)"
-team_eff <- data |>
-  group_by(Team) |>                              # 1 row per team
+
+"READ csv"
+nba <- read.csv(
+  here::here("raw_data", "nba_2025-10-30.csv")
+)
+"********************************************************************************"
+
+
+
+" Team-level shooting efficiency (attempts vs successful shots)"
+team_eff <- nba |>
+  group_by(Team) |>                              
   summarise(
-    FG = sum(FG, na.rm = TRUE),     # total made shots
-    FGA = sum(FGA, na.rm = TRUE)  # total attempts
+    FG = sum(FG, na.rm = TRUE),     
+    FGA = sum(FGA, na.rm = TRUE),
+    .groups = "drop"
   ) |>
   mutate(
     ratio = FG / FGA,         # success ratio
@@ -22,74 +29,68 @@ team_eff <- data |>
   ) |>
   arrange(rank)                                     # sort by rank
 
-head(team_eff)
+team_eff_small <- team_eff |>
+  select(Team, rank, ratio)
+
 
 "***********************************************************************************"
-"Calculate Player Efficiency"
+"Calculate Player-level  shooting Efficiency"
 
-player_eff <- data %>%
-  filter(FGA > 0) %>%                     # avoids invalid  and division errors
+player_eff <- nba %>%
+  filter(FGA > 0) %>%                   
   mutate(ratio = FG / FGA) %>%
   arrange(desc(ratio)) %>%
   mutate(rank = row_number())
 
-top_players <- player_eff %>% slice_head(n = 20)
-
-ggplot(top_players, aes(x = reorder(Player, ratio), y = ratio, fill = rank)) +
-  geom_col() +
-  coord_flip() +
-  scale_fill_viridis_d() +                # FIXES WARNING #1
-  labs(
-    title = "Top 20 Players by Shooting Efficiency",
-    x = "Player",
-    y = "Success Ratio"
-  )
-
-
-
-
-" Players new rank based on success rates"
-library(ggplot2)
+top_n_players <- 20
 
 top_players <- player_eff %>%
-  slice_head(n = 20)
+  slice_head(n = top_n_players)
 
-ggplot(top_players, aes(x = reorder(Player, ratio), y = ratio)) +
+
+
+p_player_eff <- ggplot(
+  top_players,
+  aes(x = reorder(Player, ratio), y = ratio, fill = ratio)
+) +
   geom_col() +
   coord_flip() +
+  scale_fill_gradient(low = "#D6EAF8", high = "#2E86C1") +
   labs(
     title = "Top 20 Players by Shooting Efficiency",
     x = "Player",
-    y = "Success Ratio (FG made / FG attempts)"
+    y = "Success Ratio",
+    fill = "Ratio"
   )
 
 
-"Fun little impact score"
-data <- data %>%
+" Player  impact score"
+nba_impact <- nba %>%
   mutate(
     impact = PTS + TRB + AST + STL + BLK
   )
 
 
-impact_rank <- data %>%
-  arrange(desc(impact)) %>%
+impact_rank <- nba_impact |>
+  arrange(desc(impact)) |>
   mutate(rank = row_number())
-head(impact_rank)
 
-
-library(ggplot2)
 
 top_impact <- impact_rank %>%
   slice_head(n = 15)
 
-ggplot(top_impact, aes(x = reorder(Player, impact), y = impact, fill = rank)) +
+p_impact <- ggplot(
+  top_impact,
+  aes(x = reorder(Player, impact), y = impact, fill = impact)
+) +
   geom_col() +
   coord_flip() +
-  scale_fill_viridis_c() +
+  scale_fill_gradient(low = "#D5F5E3", high = "#27AE60") +
   labs(
     title = "Top 15 Players by Total Impact Score",
     x = "Player",
-    y = "Impact Score"
+    y = "Impact Score",
+    fill = "Impact"
   )
 
 "To capture a more complete picture of player contribution, I expanded the Player Impact Score to include defensive components — specifically steals and blocks. These metrics reflect a player's ability to disrupt possessions and protect the rim, adding essential context beyond scoring and rebounding alone. By combining points, total rebounds, assists, steals, and blocks, the updated score highlights true two-way players whose impact goes beyond the basic box score. The resulting rankings reveal which athletes consistently influence the game across all phases, not just on the offensive end."
@@ -110,8 +111,24 @@ saveRDS(
   file = here::here("output", "player_eff.rds")
 )
 
+ggsave(
+  filename = here::here("output", "top_players_eff.png"),
+  plot     = p_player_eff,
+  width    = 7,
+  height   = 5,
+  dpi      = 300
+)
+
 # Save impact rankings
 saveRDS(
   impact_rank,
   file = here::here("output", "impact_rank.rds")
+)
+
+ggsave(
+  filename = here::here("output", "top_players_impact.png"),
+  plot     = p_impact,
+  width    = 7,
+  height   = 5,
+  dpi      = 300
 )

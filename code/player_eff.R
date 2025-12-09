@@ -77,7 +77,7 @@ impact_rank <- nba_impact |>
 
 
 top_impact <- impact_rank %>%
-  slice_head(n = 15)
+  slice_head(n = 20)
 
 p_impact <- ggplot(
   top_impact,
@@ -87,7 +87,7 @@ p_impact <- ggplot(
   coord_flip() +
   scale_fill_gradient(low = "#D5F5E3", high = "#27AE60") +
   labs(
-    title = "Top 15 Players by Total Impact Score",
+    title = "Top 20 Players by Total Impact Score",
     x = "Player",
     y = "Impact Score",
     fill = "Impact"
@@ -101,8 +101,8 @@ p_impact <- ggplot(
 
 # Save team efficiency
 saveRDS(
-  team_eff,
-  file = here::here("output", "team_eff.rds")
+  team_eff_small,
+  file = here::here("output", "team_eff_small.rds")
 )
 
 # Save player efficiency

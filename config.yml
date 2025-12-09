@@ -1,0 +1,11 @@
+default:
+  analysis:
+    age_type: "continuous"
+
+age_cont:
+  analysis:
+    age_type: "continuous"
+
+age_cat:
+  analysis:
+    age_type: "categorical"

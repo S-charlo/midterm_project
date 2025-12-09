@@ -9,15 +9,34 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Project details
+`points_by_age.R`
+- This code evaluates various point types by age and produces scatter plots with linear regression lines showing the strength and direction of the relationship.
+
+`rank_by_age.R`
+- This code evaluates player ranking by age and produces a scatter plot with a linear regression line showing the strength and direction of the relationship.
+
+`points_by_age_cat.R`
+- This code evaluates various point types by age bands and produced box plots showing the distribution of points by age bands.
+
 `Data` 
 - This chunk reads our data as a csv file from the environment
 
 `player_eff. R` 
-- This chunck of code reads in the data
+- This chunk of code reads in the data
 -This project uses NBA box score data to calculate:
  1.  **Team-level shooting efficiency** (field goals made vs. field goals attempted),
  2. **Player-level shooting efficiency**, and
  3. A **Player Impact Score** that includes offensive and defensive contributions.
 
 For this analysis, I used field_goal as the measure of successful shots and field_goal_atmpts as total attempts. These variables are both reported per 36 minutes and reflect overall scoring efficiency. I then created a success ratio (field_goal / field_goal_atmpts) and ranked teams based on that efficiency score.
+
+# Midterm Report
+- To build the midterm report [insert make rule]
+
+- It will build the `midterm_report.Rmd` file.
+
+- To customize the midterm report, toggle the "env" value between "age_cont" and "age_cat." "age_cont" will yield graphical outputs for the continuous age analysis, and "age_cat" will yield graphical outputs for the categorical age analysis. The default setting is the continuous analysis. 
+
+
 

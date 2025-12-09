@@ -1,0 +1,58 @@
+---
+title: "Midterm Report"
+author: "Sofia Charlot, Isabella Livingston, Treasure Ebikwo"
+date: "2025-12-09"
+output: html_document
+params: 
+  env: "age_cont"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(config)
+library(knitr)
+
+here::i_am("midterm_report.Rmd")
+
+cfg <- config::get(
+  file = here::here("config.yml"),
+  config = params$env
+)
+
+age_type <- cfg$analysis$age_type
+```
+
+
+
+# Graphical Analysis
+
+## Points by Age 
+```{r points-by-age, echo=FALSE, out.width="48%", fig.show="hold"}  
+if (age_type == "continuous") {
+  figs <- c(
+    "output/figures/age_fg.png",
+    "output/figures/age_x3p.png",
+    "output/figures/age_x2p.png",
+    "output/figures/age_ft.png"
+    )
+} else if (age_type == "categorical") {
+  figs <- c(
+    "output/figures/age_cat_fg.png",
+    "output/figures/age_cat_x3p.png",
+    "output/figures/age_cat_x2p.png",
+    "output/figures/age_cat_ft.png"
+  )
+}
+knitr::include_graphics(figs)
+```
+
+
+## Rank by Age
+```{r ranl-by-age, echo=FALSE, out.width="60%"}
+if(age_type == "continuous") {
+   knitr::include_graphics("output/figures/age_rank.png")
+}
+
+```
